@@ -37,7 +37,7 @@ h1{
   display: flex;
   margin-bottom: 10px;
 }
-button{
+button {
   font-family: 'Work Sans', sans-serif;
 	font-size: 22px;
 	background-color: #279;
@@ -76,6 +76,12 @@ button:hover{
   height: 200px;
   margin-top: 40px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   flex-wrap: wrap;
+}
+.buttons-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
