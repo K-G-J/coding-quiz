@@ -1,37 +1,43 @@
-var quizQuestions = document.getElementById("#quiz");
-var buttonsContainer = document.getElementById("#buttons-container");
-var startButton = document.getElementById("#start");
+var quizQuestionsContainer = document.getElementById("quiz");
+var quizQuestion = document.getElementById("quiz-question");
+var buttonsContainer = document.getElementById("buttons-container");
+var startButton = document.getElementById("start");
 
 startButton.addEventListener("click", function() {
+  buttonsContainer.removeChild(startButton);
+  quizQuestions.removeChild
+  displayQuestion();
+});
+
+var displayQuestion = function() {
     // create buttonA 
     var buttonA = document.createElement("button");
     buttonA.textContent = "option a";
     buttonA.id = "a";
-    buttonsContainer.removeChild(startButton);
     buttonsContainer.appendChild(buttonA);
-
     // create buttonB
     var buttonB = document.createElement("button");
     buttonB.textContent = "option b";
     buttonB.id = "b";
     buttonsContainer.appendChild(buttonB);
-    
     // create buttonC
     var buttonC = document.createElement("button");
     buttonC.textContent = "option c";
     buttonC.id = "c";
     buttonsContainer.appendChild(buttonC);
-    
     // create buttonD
     var buttonD = document.createElement("button");
     buttonD.textContent = "option d";
     buttonD.id = "d";
     buttonsContainer.appendChild(buttonD);
-});
+
+    // change value of question text 
+    quizQuestion.innerText = "input value from questions array"
+}
 
 
 // quiz questions 
-var questions = [
+var quizQuestions = [
     {
       question: "Inside the HTML document, where do you place your JavaScript code?",
       answers: {
