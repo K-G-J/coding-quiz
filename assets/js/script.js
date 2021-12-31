@@ -1,49 +1,63 @@
-var questionsContainer = document.getElementById("quiz");
 var resultsContainer = document.getElementById("results");
 var resultsText = document.getElementById("results-text")
-var quizQuestion = document.getElementById("quiz-question");
+var questionContainer = document.getElementById("quiz-question");
 var buttonsContainer = document.getElementById("buttons-container");
 var startButton = document.getElementById("start");
 var questionCounter = 0;
+var numCorrect = 0;
 
+// begin quiz
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
   displayQuestion();
 });
 
+// get the current question 
 var setCurrentQuestion = function() {
   var currentQuestion = quizQuestions[questionCounter]; 
   return currentQuestion;
 }
 
+// display current question and answer option buttons 
 var displayQuestion = function() {
   var currentQuestion = setCurrentQuestion();
+  questionContainer.innerText = currentQuestion.question
       for (letter in currentQuestion.answers) {
-        quizQuestion.innerText = currentQuestion.question
         var optionButton = document.createElement("button")
         optionButton.className = "option-button"
+        optionButton.id = "option-button"
         optionButton.textContent = currentQuestion.answers[letter];
+        optionButton.value = letter;
         buttonsContainer.appendChild(optionButton);
         optionButton.addEventListener("click", optionButtonHandler);
       }
   };
 
+  // handle right or wrong answer 
   var optionButtonHandler = function (event) {
     var currentQuestion = setCurrentQuestion();
     var userAnswer = event.target 
-    if (userAnswer.textContent === currentQuestion.correctAnswer) {
+    if (userAnswer.value === currentQuestion.correctAnswer) {
       resultsText.innerText = currentQuestion.feedback
       resultsContainer.appendChild(resultsText);
       checkQuizProgress();
+      numCorrect ++;
     } else {
       resultsText.innerText = "Whoops wrong answer!"
       resultsContainer.appendChild(resultsText);
       checkQuizProgress();
     }
+    disableOptionButton();
     questionCounter ++;
   }
+  
+  // disable option button after first click 
+  var disableOptionButton = function() {
+    document.getElementById("option-button").disabled = true;
+  }
 
+  // proceed or end quiz 
   var checkQuizProgress = function() {
     if (questionCounter < quizQuestions.length-1) {
       showNextButton();
@@ -53,6 +67,7 @@ var displayQuestion = function() {
     }
   }
 
+  // if proceeding, create "next" button 
   var showNextButton = function() {
     var nextButton = document.createElement("button")
     nextButton.className = "next-button"
@@ -60,21 +75,62 @@ var displayQuestion = function() {
     resultsContainer.appendChild(nextButton);
     nextButton.addEventListener("click", nextButtonHandler);
   }
-
+  // next button click brings next question 
   var nextButtonHandler = function() {
     buttonsContainer.innerHTML = "";
     resultsContainer.innerHTML = "";
     displayQuestion();
   }
 
+  // if quiz ended, submit initials and save score 
   var showSubmitScreen = function() {
-    quizQuestion.innerText = "End of quiz"
+    // change the HTML elements 
     resultsContainer.innerHTML = "";
     buttonsContainer.innerHTML = "";
+    questionContainer.innerText = "Good work learning JavaScript!"
+    var displayScore = document.createElement("p")
+    displayScore.className = "score-display"
+    displayScore.innerText = `Your final score is ${numCorrect}`
+    questionContainer.appendChild(displayScore);
+    var initialForm = document.createElement("form")
+    initialForm.className = "initial-form"
+    questionContainer.appendChild(initialForm)
+    var initialInput = document.createElement("div")
+    initialInput.className = "initial-input"
+    initialInput.innerHTML = "<input type='text' name='initials' placeholder='Enter your initials here' />"
+    initialForm.appendChild(initialInput);
+    // save score and initials 
+    var input = document.querySelector("div.initial-input input[name='initials']")
+    var userObj = {
+      initials: input,
+      score: numCorrect
+    };
+    saveScore(userObj);
   }
 
+  var saveScore = function(userObj) {
+    localStorage.setItem("scores", JSON.stringify(userObj));
+    console.log(scores);
+};
 
-// quiz questions 
+// var loadScores = function() {
+//     var savedScores = localStorage.getItem("scores");
+
+//     if (!savedScores) {
+//         return false 
+//     }
+//     savedScores = JSON.parse(savedTasks);
+//     // loop through savedScores array
+//     for (i = 0; i < savedTasks.length; i++) {
+//         //pass each object intp the printScores function
+//         printScores(savedScores[i]);
+//     }
+// };
+
+// var printScores = function ()
+
+
+// quiz questions array 
 var quizQuestions = [
     {
       question: "Inside the HTML document, where do you place your JavaScript code?",
@@ -84,7 +140,7 @@ var quizQuestions = [
         c: "Inside the <head> element",
         d: "In the <footer> element"
       },
-      correctAnswer: "Inside the <script> element",
+      correctAnswer: "a",
       feedback: "Nice job! You place your JavaScript inside the <script> element of the HTML Document is correct."
     },
     {
