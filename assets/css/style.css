@@ -28,14 +28,13 @@ h1{
   flex-wrap: wrap;
   flex-direction: column;
 }
-.answers {
-  margin-bottom: 20px;
-  text-align: left;
-  display: flex;
-}
-.answers label{
-  display: flex;
+#quiz-question {
+  font-size: 30px;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 button {
   font-family: 'Work Sans', sans-serif;

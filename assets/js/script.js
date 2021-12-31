@@ -1,4 +1,6 @@
-var quizQuestionsContainer = document.getElementById("quiz");
+var questionsContainer = document.getElementById("quiz");
+var resultsContainer = document.getElementById("results");
+var resultsText = document.getElementById("results-text")
 var quizQuestion = document.getElementById("quiz-question");
 var buttonsContainer = document.getElementById("buttons-container");
 var startButton = document.getElementById("start");
@@ -6,22 +8,70 @@ var questionCounter = 0;
 
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
-  quizQuestions.removeChild
+  resultsContainer.removeChild(resultsText);
   displayQuestion();
 });
 
-var displayQuestion = function () {
-      let currentQuestion = quizQuestions[questionCounter]; 
-  
+var setCurrentQuestion = function() {
+  var currentQuestion = quizQuestions[questionCounter]; 
+  return currentQuestion;
+}
+
+var displayQuestion = function() {
+  var currentQuestion = setCurrentQuestion();
       for (letter in currentQuestion.answers) {
+        quizQuestion.innerText = currentQuestion.question
         var optionButton = document.createElement("button")
-        optionButton.id = "option-button"
+        optionButton.className = "option-button"
         optionButton.textContent = currentQuestion.answers[letter];
         buttonsContainer.appendChild(optionButton);
+        optionButton.addEventListener("click", optionButtonHandler);
       }
-    quizQuestion.innerText = currentQuestion.question
-    questionCounter += 1;
   };
+
+  var optionButtonHandler = function (event) {
+    var currentQuestion = setCurrentQuestion();
+    var userAnswer = event.target 
+    if (userAnswer.textContent === currentQuestion.correctAnswer) {
+      resultsText.innerText = currentQuestion.feedback
+      resultsContainer.appendChild(resultsText);
+      checkQuizProgress();
+    } else {
+      resultsText.innerText = "Whoops wrong answer!"
+      resultsContainer.appendChild(resultsText);
+      checkQuizProgress();
+    }
+    questionCounter ++;
+  }
+
+  var checkQuizProgress = function() {
+    if (questionCounter < quizQuestions.length-1) {
+      showNextButton();
+    }
+    else {
+      showSubmitScreen();
+    }
+  }
+
+  var showNextButton = function() {
+    var nextButton = document.createElement("button")
+    nextButton.className = "next-button"
+    nextButton.textContent = "Next"
+    resultsContainer.appendChild(nextButton);
+    nextButton.addEventListener("click", nextButtonHandler);
+  }
+
+  var nextButtonHandler = function() {
+    buttonsContainer.innerHTML = "";
+    resultsContainer.innerHTML = "";
+    displayQuestion();
+  }
+
+  var showSubmitScreen = function() {
+    quizQuestion.innerText = "End of quiz"
+    resultsContainer.innerHTML = "";
+    buttonsContainer.innerHTML = "";
+  }
 
 
 // quiz questions 
@@ -34,7 +84,7 @@ var quizQuestions = [
         c: "Inside the <head> element",
         d: "In the <footer> element"
       },
-      correctAnswer: "a",
+      correctAnswer: "Inside the <script> element",
       feedback: "Nice job! You place your JavaScript inside the <script> element of the HTML Document is correct."
     },
     {
