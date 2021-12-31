@@ -10,30 +10,17 @@ startButton.addEventListener("click", function() {
 });
 
 var displayQuestion = function() {
-    // create buttonA 
-    var buttonA = document.createElement("button");
-    buttonA.textContent = "option a";
-    buttonA.id = "a";
-    buttonsContainer.appendChild(buttonA);
-    // create buttonB
-    var buttonB = document.createElement("button");
-    buttonB.textContent = "option b";
-    buttonB.id = "b";
-    buttonsContainer.appendChild(buttonB);
-    // create buttonC
-    var buttonC = document.createElement("button");
-    buttonC.textContent = "option c";
-    buttonC.id = "c";
-    buttonsContainer.appendChild(buttonC);
-    // create buttonD
-    var buttonD = document.createElement("button");
-    buttonD.textContent = "option d";
-    buttonD.id = "d";
-    buttonsContainer.appendChild(buttonD);
-
-    // change value of question text 
-    quizQuestion.innerText = "input value from questions array"
-}
+  quizQuestions.forEach ((currentQuestion) => {
+    currentQuestion.answers
+      for (letter in currentQuestion.answers) {
+      var optionButton = document.createElement("button")
+      optionButton.id = "option-button"
+      optionButton.textContent = currentQuestion.answers[letter];
+      buttonsContainer.appendChild(optionButton);
+    }
+    quizQuestion.innerText = currentQuestion.question
+  });
+};
 
 
 // quiz questions 
