@@ -2,6 +2,7 @@ var quizQuestionsContainer = document.getElementById("quiz");
 var quizQuestion = document.getElementById("quiz-question");
 var buttonsContainer = document.getElementById("buttons-container");
 var startButton = document.getElementById("start");
+var questionCounter = 0;
 
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
@@ -9,18 +10,18 @@ startButton.addEventListener("click", function() {
   displayQuestion();
 });
 
-var displayQuestion = function() {
-  quizQuestions.forEach ((currentQuestion) => {
-    currentQuestion.answers
+var displayQuestion = function () {
+      let currentQuestion = quizQuestions[questionCounter]; 
+  
       for (letter in currentQuestion.answers) {
-      var optionButton = document.createElement("button")
-      optionButton.id = "option-button"
-      optionButton.textContent = currentQuestion.answers[letter];
-      buttonsContainer.appendChild(optionButton);
-    }
+        var optionButton = document.createElement("button")
+        optionButton.id = "option-button"
+        optionButton.textContent = currentQuestion.answers[letter];
+        buttonsContainer.appendChild(optionButton);
+      }
     quizQuestion.innerText = currentQuestion.question
-  });
-};
+    questionCounter += 1;
+  };
 
 
 // quiz questions 
