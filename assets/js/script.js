@@ -13,12 +13,13 @@ var sec = 59;
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
-  displayQuestion()
   // display time remaining 
   var timer = document.createElement("h2")
 timer.id = "timer-text"
 timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
   banner.appendChild(timer);
+  // change back to display question!
+  showSubmitScreen();
    // default timeout 
    setTimeout(() => {
     showSubmitScreen();
@@ -136,35 +137,52 @@ var displayQuestion = function() {
     initialInput.innerHTML = "<input type='text' name='initials' placeholder='Enter your initials here' />"
     initialForm.appendChild(initialInput);
     // save score and initials 
-    var userInitials = document.querySelector("div.initial-input input[name='initials']")
+    // ISSUE HAPPENING HERE WITH SCOPING? 
+    var userInitials = document.querySelector("input[name='initials']").value;
     var userObj = {
       initials: userInitials,
       score: numCorrect
     };
-    saveScore(userObj);
-    // loadScores()
+    localStorage.setItem("userObj", JSON.stringify(userObj));
+    // load scores on submit
+    initialForm.addEventListener("submit", loadScores)
+    // creat submit button 
+    var submitButton = document.createElement("button")
+    submitButton.id = "submit-button"
+    submitButton.textContent = "Submit"
+    initialForm.appendChild(submitButton);
+    submitButton.addEventListener("click", loadScores)
   }
 
-  var saveScore = function(userObj) {
-    localStorage.setItem("scores", JSON.stringify(userObj));
-    console.log(scores);
+var loadScores = function(event) {
+  event.preventDefault();
+  var users = localStorage.getItem("userObj");
+  var userObjects = JSON.parse(users);
+  var printScores = function () {
+    document.querySelector("#timer-text").innerHTML = "Past Scores"
+    resultsContainer.innerHTML = "";
+    buttonsContainer.innerHTML = "";
+    questionContainer.innerHTML = "";
+    var userScoreListContainer = document.createElement("div");
+    userScoreListContainer.className = "user-score-list-container";
+    questionContainer.appendChild(userScoreListContainer);
+    var userScoreList = document.createElement("ul");
+    userScoreList.className = "user-score-list"
+    userScoreListContainer.appendChild(userScoreList);
+    for (person in userObjects) {
+      var userScoreListItem = document.createElement("li")
+      userScoreListItem.className = "user-score-list-item"
+      userScoreListItem.textContent = `${initials} - ${score}`
+    }
+    // create retry button
+    var retryButton = document.createElement("button");
+    retryButton.id = "retry-button";
+    retryButton.textContent = "Try Again";
+    userScoreListContainer.appendChild(retryButton);
+    retryButton.addEventListener("click", window.location.reload())
+  }
+  printScores();
 };
-
-// var loadScores = function() {
-//     var savedScores = localStorage.getItem("scores");
-
-//     if (!savedScores) {
-//         return false 
-//     }
-//     savedScores = JSON.parse(savedcores);
-//     // loop through savedScores array
-//     for (i = 0; i < savedTasks.length; i++) {
-//         //pass each object into the printScores function
-//         printScores(savedScores[i]);
-//     }
-// };
-
-// var printScores = function ()
 
 
 // quiz questions array 
