@@ -13,12 +13,12 @@ var sec = 59;
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
+  displayQuestion()
+  // display time remaining 
   var timer = document.createElement("h2")
-  timer.id = "timer-text"
-  timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
+timer.id = "timer-text"
+timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
   banner.appendChild(timer);
-  displayQuestion();
-  timer();
    // default timeout 
    setTimeout(() => {
     showSubmitScreen();
@@ -26,7 +26,7 @@ startButton.addEventListener("click", function() {
 });
 
 // timer 
-var timer = setInterval(function() {
+var timerHandler = setInterval(function() {
     document.getElementById("timer").innerHTML = minute + " : " + sec;
     sec--;
     if (sec === 00 || sec < 0) {
@@ -64,16 +64,22 @@ var displayQuestion = function() {
   var optionButtonHandler = function (event) {
     var currentQuestion = setCurrentQuestion();
     var userAnswer = event.target 
+    // correct answer 
     if (userAnswer.value === currentQuestion.correctAnswer) {
       resultsText.innerText = currentQuestion.feedback
       resultsContainer.appendChild(resultsText);
       checkQuizProgress();
       numCorrect ++;
+    // wrong answer 
     } else {
       resultsText.innerText = "Whoops wrong answer!"
       resultsContainer.appendChild(resultsText);
       checkQuizProgress();
-      sec -= 30
+      minute -= 2
+      if (minute < 0) {
+        window.alert("You timed out!");
+        showSubmitScreen();
+      }
     }
     disableOptionButton();
     questionCounter ++;
@@ -90,13 +96,12 @@ var displayQuestion = function() {
   var checkQuizProgress = function() {
     if (questionCounter < quizQuestions.length-1) {
       showNextButton();
-    }
-    else {
+    } else {
       showSubmitScreen();
     }
   }
 
-  // if proceeding, create "next" button 
+  // if proceeding -> create "next" button 
   var showNextButton = function() {
     var nextButton = document.createElement("button")
     nextButton.className = "next-button"
@@ -104,17 +109,17 @@ var displayQuestion = function() {
     resultsContainer.appendChild(nextButton);
     nextButton.addEventListener("click", nextButtonHandler);
   }
-  // next button click brings next question 
+  // next button click -> next question 
   var nextButtonHandler = function() {
     buttonsContainer.innerHTML = "";
     resultsContainer.innerHTML = "";
     displayQuestion();
   }
 
-  // if quiz ended, submit initials and save score 
+  // if quiz ended -> submit initials and save score 
   var showSubmitScreen = function() {
     // change the HTML elements 
-    clearInterval(timer);
+    clearInterval(timerHandler);
     document.querySelector("#timer-text").innerHTML = "Let's see your score!"
     resultsContainer.innerHTML = "";
     buttonsContainer.innerHTML = "";
@@ -131,12 +136,13 @@ var displayQuestion = function() {
     initialInput.innerHTML = "<input type='text' name='initials' placeholder='Enter your initials here' />"
     initialForm.appendChild(initialInput);
     // save score and initials 
-    var input = document.querySelector("div.initial-input input[name='initials']")
+    var userInitials = document.querySelector("div.initial-input input[name='initials']")
     var userObj = {
-      initials: input,
+      initials: userInitials,
       score: numCorrect
     };
     saveScore(userObj);
+    // loadScores()
   }
 
   var saveScore = function(userObj) {
@@ -150,10 +156,10 @@ var displayQuestion = function() {
 //     if (!savedScores) {
 //         return false 
 //     }
-//     savedScores = JSON.parse(savedTasks);
+//     savedScores = JSON.parse(savedcores);
 //     // loop through savedScores array
 //     for (i = 0; i < savedTasks.length; i++) {
-//         //pass each object intp the printScores function
+//         //pass each object into the printScores function
 //         printScores(savedScores[i]);
 //     }
 // };
