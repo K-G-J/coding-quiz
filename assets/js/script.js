@@ -160,7 +160,7 @@ var displayQuestion = function() {
   var saveScores = function(userObj) {
     localStorage.setItem("userObj", JSON.stringify(userObj));
     console.log(userObj);
-    // returns emptry dtring for initials and 0 for score 
+    // returns emptry string for initials and 0 for score 
   }
 
 var loadScores = function(event) {
