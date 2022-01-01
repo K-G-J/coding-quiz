@@ -144,6 +144,8 @@ var displayQuestion = function() {
       score: numCorrect
     };
     localStorage.setItem("userObj", JSON.stringify(userObj));
+    // trying with separate function
+    saveScores();
     // load scores on submit
     initialForm.addEventListener("submit", loadScores)
     // creat submit button 
@@ -154,8 +156,17 @@ var displayQuestion = function() {
     submitButton.addEventListener("click", loadScores)
   }
 
+  // 
+  var saveScores = function(userObj) {
+    localStorage.setItem("userObj", JSON.stringify(userObj));
+    console.log(userObj);
+    // returns emptry dtring for initials and 0 for score 
+  }
+
 var loadScores = function(event) {
   event.preventDefault();
+  // saveScores();
+  // if I call saveScores() I get a JSON parsing error 
   var users = localStorage.getItem("userObj");
   var userObjects = JSON.parse(users);
   var printScores = function () {
