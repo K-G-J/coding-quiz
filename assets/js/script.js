@@ -20,23 +20,31 @@ startButton.addEventListener("click", function() {
 
 // start timer 
 var startTimer = function() {
-  var minute = 1;
+  var minute = 9;
   var sec = 59;
   setInterval(function() {
     document.getElementById("timer").innerHTML = minute + " : " + sec;
     sec--;
-    if (sec == 00) {
-      minute --;
-      sec = 60;
-      if (minute == 0) {
-        minute = 10;
+    if (sec === 00) {
+      while (minute > 0) {
+        minute --;
+        sec = 59;
       }
-    } if (minute === 00 && sec === 00) {
+    }
+    if (minute === 0 && sec === 0) {
       showSubmitScreen();
     }
   }, 1000);
+  // default timeout 
+  setTimeout(() => {
+    showSubmitScreen();
+  }, 600000);
+  // get minutes and second variables
+  var getTimeLeft = function() {
+    return minute, sec;
+  }
+  getTimeLeft();
 }
-
 // get the current question 
 var setCurrentQuestion = function() {
   var currentQuestion = quizQuestions[questionCounter]; 
