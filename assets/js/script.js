@@ -2,6 +2,7 @@ var resultsContainer = document.getElementById("results");
 var resultsText = document.getElementById("results-text")
 var questionContainer = document.getElementById("quiz-question");
 var buttonsContainer = document.getElementById("buttons-container");
+var banner = document.getElementById("banner")
 var startButton = document.getElementById("start");
 var questionCounter = 0;
 var numCorrect = 0;
@@ -10,8 +11,31 @@ var numCorrect = 0;
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
+  var timer = document.createElement("h2")
+  timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
+  banner.appendChild(timer);
   displayQuestion();
+  startTimer();
 });
+
+// start timer 
+var startTimer = function() {
+  var minute = 1;
+  var sec = 59;
+  setInterval(function() {
+    document.getElementById("timer").innerHTML = minute + " : " + sec;
+    sec--;
+    if (sec == 00) {
+      minute --;
+      sec = 60;
+      if (minute == 0) {
+        minute = 10;
+      }
+    } if (minute === 00 && sec === 00) {
+      showSubmitScreen();
+    }
+  }, 1000);
+}
 
 // get the current question 
 var setCurrentQuestion = function() {
@@ -26,7 +50,6 @@ var displayQuestion = function() {
       for (letter in currentQuestion.answers) {
         var optionButton = document.createElement("button")
         optionButton.className = "option-button"
-        optionButton.id = "option-button"
         optionButton.textContent = currentQuestion.answers[letter];
         optionButton.value = letter;
         buttonsContainer.appendChild(optionButton);
@@ -54,7 +77,9 @@ var displayQuestion = function() {
   
   // disable option button after first click 
   var disableOptionButton = function() {
-    document.getElementById("option-button").disabled = true;
+    [ ... document.querySelectorAll('.option-button') ].map( 
+      thisButton => thisButton.disabled = true 
+    );
   }
 
   // proceed or end quiz 
