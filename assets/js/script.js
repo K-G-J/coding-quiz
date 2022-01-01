@@ -6,45 +6,40 @@ var banner = document.getElementById("banner")
 var startButton = document.getElementById("start");
 var questionCounter = 0;
 var numCorrect = 0;
+var minute = 9;
+var sec = 59;
 
 // begin quiz
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
   var timer = document.createElement("h2")
+  timer.id = "timer-text"
   timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
   banner.appendChild(timer);
   displayQuestion();
-  startTimer();
-});
-
-// start timer 
-var startTimer = function() {
-  var minute = 9;
-  var sec = 59;
-  setInterval(function() {
-    document.getElementById("timer").innerHTML = minute + " : " + sec;
-    sec--;
-    if (sec === 00) {
-      while (minute > 0) {
-        minute --;
-        sec = 59;
-      }
-    }
-    if (minute === 0 && sec === 0) {
-      showSubmitScreen();
-    }
-  }, 1000);
-  // default timeout 
-  setTimeout(() => {
+  timer();
+   // default timeout 
+   setTimeout(() => {
     showSubmitScreen();
   }, 600000);
-  // get minutes and second variables
-  var getTimeLeft = function() {
-    return minute, sec;
-  }
-  getTimeLeft();
-}
+});
+
+// timer 
+var timer = setInterval(function() {
+    document.getElementById("timer").innerHTML = minute + " : " + sec;
+    sec--;
+    if (sec === 00 || sec < 0) {
+        minute --;
+        sec = 59;
+        if (minute < 0) {
+          minute = 0
+          sec = 0
+          showSubmitScreen();
+        } 
+      }
+  }, 1000);
+
 // get the current question 
 var setCurrentQuestion = function() {
   var currentQuestion = quizQuestions[questionCounter]; 
@@ -78,6 +73,7 @@ var displayQuestion = function() {
       resultsText.innerText = "Whoops wrong answer!"
       resultsContainer.appendChild(resultsText);
       checkQuizProgress();
+      sec -= 30
     }
     disableOptionButton();
     questionCounter ++;
@@ -118,6 +114,8 @@ var displayQuestion = function() {
   // if quiz ended, submit initials and save score 
   var showSubmitScreen = function() {
     // change the HTML elements 
+    clearInterval(timer);
+    document.querySelector("#timer-text").innerHTML = "Let's see your score!"
     resultsContainer.innerHTML = "";
     buttonsContainer.innerHTML = "";
     questionContainer.innerText = "Good work learning JavaScript!"
