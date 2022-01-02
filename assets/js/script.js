@@ -105,7 +105,7 @@ var displayQuestion = function() {
   var showNextButton = function() {
     var nextButton = document.createElement("button")
     nextButton.className = "next-button"
-    nextButton.textContent = "Next"
+    nextButton.innerHTML = "<span>Next</span>"
     resultsContainer.appendChild(nextButton);
     nextButton.addEventListener("click", nextButtonHandler);
   }
