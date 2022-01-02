@@ -15,27 +15,28 @@ startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
   // display time remaining 
-  timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
-  timerHandler = setInterval(function() {
-    document.getElementById("timer-text").innerHTML = minute + " : " + sec;
-    sec--;
-    if (sec === 00 || sec < 0) {
-      minute --;
-      sec = 59;
-      if (minute < 0) {
-        minute = 0
-        sec = 0
-        showSubmitScreen();
-      } 
-    } if (sec < 10) {
-      sec = `0${sec}`
-    }
-  }, 1000);
-  displayQuestion();
-   // default timeout 
-   defaultTimeout = setTimeout(() => {
-    showSubmitScreen();
-  }, 600000);
+  // timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
+  // timerHandler = setInterval(function() {
+  //   document.getElementById("timer-text").innerHTML = minute + " : " + sec;
+  //   sec--;
+  //   if (sec === 00 || sec < 0) {
+  //     minute --;
+  //     sec = 59;
+  //     if (minute < 0) {
+  //       minute = 0
+  //       sec = 0
+  //       showSubmitScreen();
+  //     } 
+  //   } if (sec < 10) {
+  //     sec = `0${sec}`
+  //   }
+  // }, 1000);
+  // displayQuestion();
+  //  // default timeout 
+  //  defaultTimeout = setTimeout(() => {
+  //   showSubmitScreen();
+  // }, 600000);
+  showSubmitScreen();
 });
 
 
@@ -118,9 +119,11 @@ var displayQuestion = function() {
 
   // if quiz ended -> submit initials and save score 
   var showSubmitScreen = function() {
+
     // stop timers 
-    clearInterval(timerHandler);
-    clearTimeout(defaultTimeout);
+    // clearInterval(timerHandler);
+    // clearTimeout(defaultTimeout);
+
     // change the HTML elements 
     document.querySelector("#timer-text").innerHTML = "Let's see your score!"
     resultsContainer.innerHTML = "";
@@ -176,6 +179,7 @@ var displayScores = function () {
   for (var user of currentScores) {
     console.log("Score", user);
     var userDiv = document.createElement("div");
+    userDiv.className = "user-div";
     userDiv.innerHTML = `${user.initials} - ${user.score}`;
     userBoardContainer.appendChild(userDiv)
   }

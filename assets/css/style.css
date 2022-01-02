@@ -45,6 +45,44 @@ h1{
   flex-direction: column;
   justify-content: center;
 }
+.initial-form {
+  margin-bottom: 100px;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.initial-input {
+  padding-bottom: 50px;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+input[type=text] {
+  width: 100%;
+  padding: 20px 20px;
+  text-align: center;
+}
+input[type=text]:focus {
+  background-color: #aed0d5 ;
+}
+.user-score-list-container {
+  margin-bottom: 100px;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 50px;
+}
+.user-div {
+  border: 2px solid #444;
+  border-radius: 10px;
+  margin: 5px;
+}
 /* End of Question/Main Message Styling */
 
 /* Button Styling */
@@ -78,8 +116,12 @@ button {
 #submit-button:hover {
   background-color: #368B96;
 }
+#retry-button {
+  margin-top: 20px;
+}
 #retry-button:hover {
   background-color: #368B96;
+  transform: scale(1.2);
 }
 .next-button {
   width: 30%;
@@ -164,5 +206,6 @@ button {
   align-items: center;
   align-content: center;
   text-align: center;
+  width: 70%;
 }
 /* End of Results/Bottom Message Styling */
