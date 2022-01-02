@@ -14,8 +14,21 @@ var sec = 59;
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
+  // display time remaining 
   timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
-  timerHandler();
+  timerHandler = setInterval(function() {
+    document.getElementById("timer-text").innerHTML = minute + " : " + sec;
+    sec--;
+    if (sec === 00 || sec < 0) {
+      minute --;
+      sec = 59;
+      if (minute < 0) {
+        minute = 0
+        sec = 0
+        showSubmitScreen();
+      } 
+    }
+  }, 1000);
   displayQuestion();
    // default timeout 
    setTimeout(() => {
@@ -23,23 +36,6 @@ startButton.addEventListener("click", function() {
   }, 600000);
 });
 
-// timer 
-var timerHandler = function() {
- setInterval(function() {
-    // display time remaining 
-     document.getElementById("timer-text").innerHTML = minute + " : " + sec;
-     sec--;
-     if (sec === 00 || sec < 0) {
-         minute --;
-         sec = 59;
-         if (minute < 0) {
-           minute = 0
-           sec = 0
-           showSubmitScreen();
-         } 
-       }
-   }, 1000);
-}
 
 // get the current question 
 var setCurrentQuestion = function() {
@@ -201,7 +197,6 @@ var showUserBoard = function(event) {
     displayScores();
 }
 
-
 // quiz questions array 
 var quizQuestions = [
     {
@@ -276,7 +271,7 @@ var quizQuestions = [
           a: "Functions can be reused throughout your code",
           b: "A function must always be assigned an identifier",
           c: "Functions can receive arguments that can alter the output of a function",
-          d: "Functions are able to be recursive."
+          d: "Functions are able to be recursive"
         },
         correctAnswer: "b",
         feedback: "You're doing great! Functions without identifiers are called anonymous functions which are used quite frequently used in JavaScript. Make sure you are familiar with functions and how they work."
