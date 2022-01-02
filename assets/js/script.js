@@ -2,7 +2,8 @@ var resultsContainer = document.getElementById("results");
 var resultsText = document.getElementById("results-text")
 var questionContainer = document.getElementById("quiz-question");
 var buttonsContainer = document.getElementById("buttons-container");
-var banner = document.getElementById("banner")
+var banner = document.getElementById("banner");
+var timer = document.getElementById("timer-text");
 var startButton = document.getElementById("start");
 var questionCounter = 0;
 var numCorrect = 0;
@@ -13,11 +14,8 @@ var sec = 59;
 startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
-  var timer = document.createElement("h2")
-   timer.id = "timer-text"
-   banner.appendChild(timer);
-   timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
-  timerHandler();
+  timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
+  //timerHandler();
   // change back to display question!
   showSubmitScreen();
    // default timeout 
@@ -30,7 +28,7 @@ startButton.addEventListener("click", function() {
 var timerHandler = function() {
  setInterval(function() {
     // display time remaining 
-     document.getElementById("timer").innerHTML = minute + " : " + sec;
+     document.getElementById("timer-text").innerHTML = minute + " : " + sec;
      sec--;
      if (sec === 00 || sec < 0) {
          minute --;
@@ -124,7 +122,6 @@ var displayQuestion = function() {
   var showSubmitScreen = function() {
     // change the HTML elements 
     clearInterval(timerHandler);
-    banner.appendChild(timer);
     document.querySelector("#timer-text").innerHTML = "Let's see your score!"
     resultsContainer.innerHTML = "";
     buttonsContainer.innerHTML = "";
