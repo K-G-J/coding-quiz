@@ -15,28 +15,27 @@ startButton.addEventListener("click", function() {
   buttonsContainer.removeChild(startButton);
   resultsContainer.removeChild(resultsText);
   // display time remaining 
-  // timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
-  // timerHandler = setInterval(function() {
-  //   document.getElementById("timer-text").innerHTML = minute + " : " + sec;
-  //   sec--;
-  //   if (sec === 00 || sec < 0) {
-  //     minute --;
-  //     sec = 59;
-  //     if (minute < 0) {
-  //       minute = 0
-  //       sec = 0
-  //       showSubmitScreen();
-  //     } 
-  //   } if (sec < 10) {
-  //     sec = `0${sec}`
-  //   }
-  // }, 1000);
-  // displayQuestion();
-  //  // default timeout 
-  //  defaultTimeout = setTimeout(() => {
-  //   showSubmitScreen();
-  // }, 600000);
-  showSubmitScreen();
+  timer.innerHTML = "You have <span id='timer'>10:00<span> minutes"
+  timerHandler = setInterval(function() {
+    document.getElementById("timer-text").innerHTML = minute + " : " + sec;
+    sec--;
+    if (sec === 00 || sec < 0) {
+      minute --;
+      sec = 59;
+      if (minute < 0) {
+        minute = 0
+        sec = 0
+        showSubmitScreen();
+      } 
+    } if (sec < 10) {
+      sec = `0${sec}`
+    }
+  }, 1000);
+  displayQuestion();
+   // default timeout 
+   defaultTimeout = setTimeout(() => {
+    showSubmitScreen();
+  }, 600000);
 });
 
 
@@ -97,10 +96,10 @@ var displayQuestion = function() {
   var checkQuizProgress = function() {
     if (questionCounter < quizQuestions.length-1) {
       showNextButton();
-    } else {
-      showSubmitScreen();
+     } else {
+      showSeeResultsButton();
     }
-  }
+  };
 
   // if proceeding -> create "next" button 
   var showNextButton = function() {
@@ -117,13 +116,24 @@ var displayQuestion = function() {
     displayQuestion();
   }
 
+  // if gone through all questions -> see results 
+  var showSeeResultsButton = function() {
+    var seeResultsButton = document.createElement("button")
+    seeResultsButton.className = "next-button"
+    seeResultsButton.innerHTML = "<span>See Results!</span>"
+    resultsContainer.appendChild(seeResultsButton);
+    seeResultsButton.addEventListener("click", function() {
+      buttonsContainer.innerHTML = "";
+      resultsContainer.innerHTML = "";
+      showSubmitScreen();
+    });
+  };
+
   // if quiz ended -> submit initials and save score 
   var showSubmitScreen = function() {
-
     // stop timers 
-    // clearInterval(timerHandler);
-    // clearTimeout(defaultTimeout);
-
+    clearInterval(timerHandler);
+    clearTimeout(defaultTimeout);
     // change the HTML elements 
     document.querySelector("#timer-text").innerHTML = "Let's see your score!"
     resultsContainer.innerHTML = "";
@@ -131,11 +141,13 @@ var displayQuestion = function() {
     questionContainer.innerText = "Good work learning JavaScript!"
     var displayScore = document.createElement("p")
     displayScore.className = "score-display"
+
     if (numCorrect === quizQuestions.length-1) {
       displayScore.innerText = `Your final score is ${numCorrect + 1}`;
     } else {
       displayScore.innerText = `Your final score is ${numCorrect}`
     }
+
     questionContainer.appendChild(displayScore);
     var initialForm = document.createElement("form")
     initialForm.className = "initial-form"
