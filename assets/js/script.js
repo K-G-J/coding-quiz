@@ -141,13 +141,11 @@ var displayQuestion = function() {
     questionContainer.innerText = "Good work learning JavaScript!"
     var displayScore = document.createElement("p")
     displayScore.className = "score-display"
-
     if (numCorrect === quizQuestions.length-1) {
       displayScore.innerText = `Your final score is ${numCorrect + 1}`;
     } else {
       displayScore.innerText = `Your final score is ${numCorrect}`
     }
-
     questionContainer.appendChild(displayScore);
     var initialForm = document.createElement("form")
     initialForm.className = "initial-form"
